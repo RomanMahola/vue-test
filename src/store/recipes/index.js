@@ -1,8 +1,7 @@
-import axios from '../../axios.js'
+import axios from '../../axios'
 import Vue from 'vue';
 
 const state = {};
-
 const getters = {
     sortedByName: state => {
         return state.recipes.sort((a, b) => a.name < b.name);
@@ -46,28 +45,30 @@ const mutations = {
 
 };
 
+
+//TODO Use default base Url in Axios
 const actions = {
     getRecipes({commit}) {
-       axios.get('api/recipes').then(response => {
+       axios.get(process.env.VUE_APP_BACKEND + 'api/recipes').then(response => {
            commit('INIT', response.data.data);
        });
    },
 
     deleteItem({ commit }, itemId) {
-        axios.delete('api/recipes/'+ itemId).then(() => {
+        axios.delete(process.env.VUE_APP_BACKEND +'api/recipes/'+ itemId).then(() => {
             commit('DELETE_ITEM', itemId);
         });
     },
 
     editItem({ commit }, data) {
-        axios.put('api/recipes/'+ data.id, data).then(() => {
+        axios.put(process.env.VUE_APP_BACKEND + 'api/recipes/'+ data.id, data).then(() => {
             console.log(data)
             commit('EDIT_ITEM', data);
         });
     },
 
     createItem({ commit }, data) {
-        axios.post('api/recipes', data).then(() => {
+        axios.post(process.env.VUE_APP_BACKEND + 'api/recipes', data).then(() => {
             commit('CREATE_ITEM', data);
         });
     }
